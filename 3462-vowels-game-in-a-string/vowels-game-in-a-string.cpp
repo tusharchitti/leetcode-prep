@@ -8,7 +8,6 @@ public:
             }
         }
         if(cnt == 0) return false;
-        if(cnt%2 ==0) return true;
         return true;
     }
 };
