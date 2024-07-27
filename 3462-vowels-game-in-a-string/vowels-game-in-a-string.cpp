@@ -5,6 +5,7 @@ public:
         for(int i=0;i<s.size();i++){
             if(s[i] =='a' || s[i] =='e' || s[i] =='o' || s[i] =='i' || s[i] =='u'){
              cnt++;
+             break;
             }
         }
         if(cnt == 0) return false;
