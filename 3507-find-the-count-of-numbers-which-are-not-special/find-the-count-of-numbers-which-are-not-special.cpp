@@ -13,21 +13,9 @@ public:
         int strt = sqrt(l);
         int end = sqrt(r);
         int ans = 0;
-        // if(strt !=1){
-        // if(strt*strt == l && isPrime(strt)) ans++;
-        // }
-        // if(end!=1){
-        // if(end*end <=r && end*end>l && isPrime(end)){ 
-        //     ans++;
-        //     } 
-        // }
-        // for(int i=strt+1;i<end;i++){
-        //     if(isPrime(i)) ans++;
-        // }
         if(strt*strt<l) strt++;
         if(end*end>=l){
             for(int i = strt;i<=end;i++){
-                //cout<<i<<" -- "<<isPrime(i)<<endl;
                 if(isPrime(i)) ans++;
             }
         }
