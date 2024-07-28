@@ -22,17 +22,14 @@ public:
     int nonSpecialCount(int l, int r) {
         int strt = sqrt(l);
         int end = sqrt(r);
-        cout<<strt<<" "<<end<<endl;
         int ans = 0;
-        //4,16
-        // 2,4
         if(strt !=1){
         if(strt*strt == l && isPrime(strt)) ans++;
         }
         if(end!=1){
         if(end*end <=r && end*end>l && isPrime(end)){ 
-            cout<<"fd"<<endl;
-            ans++;} 
+            ans++;
+            } 
         }
         
         for(int i=strt+1;i<end;i++){
