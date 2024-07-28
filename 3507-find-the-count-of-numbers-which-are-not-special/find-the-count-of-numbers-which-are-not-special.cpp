@@ -1,16 +1,5 @@
 class Solution {
 public:
-    // 10, 12
-    int getsqrt(int n) {
-        if(n==1||n==2||n==3) return 1;
-        int ans = 0;
-        for(int i=2;i<=n/2;i++){
-            if(i*i<=n){
-                ans = i;
-            }
-        }
-        return ans;
-    }
     bool isPrime(int n) {
         if(n ==1 || n== 2 || n==3||n==5) return true;
         if(n == 4) return false;
@@ -31,12 +20,9 @@ public:
             ans++;
             } 
         }
-        
         for(int i=strt+1;i<end;i++){
-            cout<<i<<endl;
             if(isPrime(i)) ans++;
         }
-        cout<<ans<<endl;
         return (r-l+1) - (ans);
     }
 };
