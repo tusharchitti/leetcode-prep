@@ -9,12 +9,11 @@ public:
         if(am.size() == 0) return false;
         if(bm.size() ==0) return true;
 
-        std::map<int, int>::iterator ait = am.begin();
-        std::map<int, int>::iterator bit = bm.begin();
+        std::map<int, int>::iterator ait = a.second.begin();
+        std::map<int, int>::iterator bit = b.second.begin();
 
-        while(ait!=am.end() || bit !=bm.end()) {
-            if(ait == am.end() && bit == bm.end()) {
-                 //cout<<"end here"<<endl;
+        while(ait!=a.second.end() || bit !=b.second.end()) {
+            if(ait == a.second.end() && bit == b.second.end()) {
                  return a.first<b.first; 
             }
 
@@ -25,13 +24,11 @@ public:
             if(ait->first>bit->first)  return false;
 
             if(ait->first == bit->first) {
-                //cout<<"dere213"<<endl;
                 if(ait->second> bit->second) {
                     return true;
                 }else if(ait->second< bit->second) {
                     return false;
                 } else {
-                    //cout<<"dfds11"<<endl;
                     ait++;
                     bit++;
                 }
@@ -53,11 +50,9 @@ public:
                 pair.second[j+1]++;
                 data[votes[i][j]-'A'] = make_pair(pair.first , pair.second);
                 char c = votes[i][j];
-                //cout<<c<<" "<<j+1<<endl;
             }
         }
         sort(data.begin(), data.end() , customComparator);
-        //cout<<"dfsd22"<<endl;
 
         string ans = "";
         for(int i=0;i<data.size();i++){
