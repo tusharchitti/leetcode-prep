@@ -3,11 +3,11 @@ public:
 
     static bool customComparator( pair<int,map<int,int>> &a, pair<int,map<int,int>> &b) {
         
-        map<int,int> am = a.second;;
-        map<int,int> bm= b.second;
+       // map<int,int> am = a.second;;
+        //map<int,int> bm= b.second;
         //cout<<a.first<<" "<<b.first<<endl;
-        if(am.size() == 0) return false;
-        if(bm.size() ==0) return true;
+        if(a.second.size() == 0) return false;
+        if(b.second.size() ==0) return true;
 
         std::map<int, int>::iterator ait = a.second.begin();
         std::map<int, int>::iterator bit = b.second.begin();
@@ -17,8 +17,8 @@ public:
                  return a.first<b.first; 
             }
 
-            if(ait == am.end()) return false;
-            if(bit == bm.end()) return true;
+            if(ait == a.second.end()) return false;
+            if(bit == b.second.end()) return true;
 
             if(ait->first<bit->first) return true;
             if(ait->first>bit->first)  return false;
