@@ -14,7 +14,7 @@ public:
 
         while(ait!=am.end() || bit !=bm.end()) {
             if(ait == am.end() && bit == bm.end()) {
-                 cout<<"end here"<<endl;
+                 //cout<<"end here"<<endl;
                  return a.first<b.first; 
             }
 
@@ -25,13 +25,13 @@ public:
             if(ait->first>bit->first)  return false;
 
             if(ait->first == bit->first) {
-                cout<<"dere213"<<endl;
+                //cout<<"dere213"<<endl;
                 if(ait->second> bit->second) {
                     return true;
                 }else if(ait->second< bit->second) {
                     return false;
                 } else {
-                    cout<<"dfds11"<<endl;
+                    //cout<<"dfds11"<<endl;
                     ait++;
                     bit++;
                 }
@@ -56,18 +56,8 @@ public:
                 //cout<<c<<" "<<j+1<<endl;
             }
         }
-
-        for(int i=0;i<data.size();i++){
-         cout<<data[i].first<<endl;
-         std::map<int, int>::iterator ait = data[i].second.begin();
-         while(ait!=  data[i].second.end()) {
-              cout<<ait->first<<" :: " <<ait->second<<endl;
-              ait++;
-         }
-         cout<<" -- "<<endl;
-        }
         sort(data.begin(), data.end() , customComparator);
-        cout<<"dfsd22"<<endl;
+        //cout<<"dfsd22"<<endl;
 
         string ans = "";
         for(int i=0;i<data.size();i++){
