@@ -1,35 +1,31 @@
 class Solution {
 public:
-
-    bool canfind(long long t, int h, vector<int>& wt){
-        long long totalH = 0;
-
-        for (int w : wt) {
-            long long left = 0, right = 1e6;
-            while (left <= right) {
-                long long mid = left + (right - left) / 2;
-                if (w * mid * (mid + 1) / 2 <= t) left = mid + 1;
-                else right = mid - 1;
-            }
-            totalH += right;
-            if (totalH >= h) return true;
+    long long minNumberOfSeconds(int mh, vector<int>& wt) {
+        //our priority queue will be containing three elements -> cost,height decresed by it,workerTimes
+        priority_queue<pair<long long,pair<long long,long long>>,vector<pair<long long,pair<long long,long long>>>,greater<pair<long long,pair<long long,long long>>>> pq;
+        //min heap
+        for(long long i = 0;i < wt.size();i++){
+            pq.push({wt[i],{1,wt[i]}});
         }
-        return totalH >= h;
-    }
-
-    long long minNumberOfSeconds(int h, vector<int>& wt) {
-        long long s=0, e=1e18;
-        long long ans=0;
-
-        while(s<=e){
-            long long mid=s+(e-s)/2;
-            if(canfind(mid, h, wt)){
-                e=mid-1;
-                ans=mid;
-            }else{
-                s=mid+1;
+        long long maxi = -1e17;
+        //ek step aage tak karna hoga
+        long long  cost = 0;
+        while(mh){
+            auto t = pq.top();
+            pq.pop();
+            mh--;
+            if(mh <= 0){
+                return 1ll*t.first;
             }
+            // ek step extra karne par hi minimum ka pata chal raha hai
+            long long height = t.second.first+1;
+            //meter of mountain
+            long long work = t.second.second;
+            //change cost
+            
+            cost = work*(height)*(height+1)/2;//this is time
+            pq.push({cost,{height,work}});
         }
-        return ans;
+        return 0;
     }
 };
