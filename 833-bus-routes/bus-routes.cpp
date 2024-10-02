@@ -78,9 +78,7 @@ public:
         if(s[i] == 0) continue;
         for(int j=0;j<t.size();j++){
             if(t[j] == 0) continue;
-            cout<<i<<" "<<j<<endl;
             int ta  = getMinJump(mp,i,j);
-            cout<<"ans : "<<ta<<endl;
             if(ta != -1) ans = min(ans,ta);
         }
        }
