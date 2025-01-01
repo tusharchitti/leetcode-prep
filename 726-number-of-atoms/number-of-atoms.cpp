@@ -9,13 +9,12 @@ bool isLower(char i)
     return (i>='a' && i<='z');
 }
 
-map<string, int> multiply(map<string, int> mp, int m)
+void multiply(map<string, int> &mp, int m)
 {
     for(auto &pair :mp)
     {
          mp[pair.first] = pair.second*m;
     }
-    return mp;
 }
 
 map<string, int> addMap(map<string, int>a, map<string, int>b)
@@ -30,7 +29,7 @@ map<string, int> addMap(map<string, int>a, map<string, int>b)
   return a;
 }
 
-string MapToString(map<string, int>a)
+string MapToString(map<string, int>&a)
 {
   string ans = "";
   for(auto key: a)
@@ -95,7 +94,7 @@ public:
                 if(multi != 0)
                 {
                     // iterate through map and multiple all the digits *multi
-                    mp = multiply(mp,multi);
+                    multiply(mp,multi);
                     ans = MapToString(mp); 
                 }
                 if(st.size() != 0)
