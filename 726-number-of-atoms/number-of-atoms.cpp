@@ -60,14 +60,12 @@ string MapToString(map<string, int>a)
 class Solution {
 public:
     string countOfAtoms(string formula) {
-        cout<<formula<<endl;
         stack<map<string,int>> st;
         string ans="";
         if(formula[0] != '(' || formula[formula.size()-1]!=')')
         {
             formula = '(' + formula + ')';
         }
-        cout<<formula<<endl;
         for(int i=0;i<formula.size();i++)
         {
              if(formula[i] == '(')
