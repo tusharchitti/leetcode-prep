@@ -54,7 +54,6 @@ string MapToString(map<string, int>a)
         }
     } 
   }
-  cout<<ans<<endl;
   return ans;
 }
 
@@ -80,10 +79,8 @@ public:
              else if(formula[i]==')')
              {
                 // end of circle.
-                cout<<"Hi"<<endl;
                 map<string,int> mp = st.top();
                 st.pop();
-                cout<<"removed"<<endl;
                 int multi = 0;
                 for(int j=i+1;j<formula.size();j++)
                 {
@@ -97,7 +94,6 @@ public:
                         break;
                     }
                 }
-                cout<<"m :"<<multi<<endl;
                 if(multi != 0)
                 {
                     // iterate through map and multiple all the digits *multi
@@ -111,7 +107,6 @@ public:
                     mp = addMap(mp,prev);
                     st.push(mp);
                 }
-                cout<<"here"<<endl;
                 ans = MapToString(mp);
              }
              else
@@ -146,7 +141,6 @@ public:
                     }
                 }
                 if(count == 0) count = 1;
-                cout<<c<<" "<<count<<endl;
                 st.top()[c] = st.top()[c]+ count;
              }
         }
