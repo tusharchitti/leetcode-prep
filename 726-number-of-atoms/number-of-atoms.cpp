@@ -85,13 +85,11 @@ public:
                 st.pop();
                 cout<<"removed"<<endl;
                 int multi = 0;
-                int counter = 1;
                 for(int j=i+1;j<formula.size();j++)
                 {
                     if(isNum(formula[j]))
                     {
                         multi = multi*10 + (formula[j]-'0');
-                        counter= counter*10;
                         i = j;
                     }
                     else
@@ -135,13 +133,11 @@ public:
                      }
                 }
                 int count = 0;
-                int counter = 1;
                 for(int j=i+1;j<formula.size();j++)
                 {
                     if(isNum(formula[j]))
                     {
-                        count = count*counter + (formula[j]-'0');
-                        counter= counter*10;
+                        count = count*10 + (formula[j]-'0');
                         i = j;
                     }
                     else
