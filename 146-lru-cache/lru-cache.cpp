@@ -1,94 +1,85 @@
-class Node
-{
-    public:
-    int value;
-    int key;
-    Node *next;
-    Node * prev;
-    Node(int key, int value) {
-        this->key= key;
-        this->value= value;
-        next= NULL;
-        prev= NULL;
-    }
-};
-
 class LRUCache {
 public:
+    struct Node {
+        int key;
+        int val;
+        Node* next;
+        Node* prev;
+        Node(int k, int v) : key(k), val(v), next(nullptr), prev(nullptr) {}
+    };
+
     unordered_map<int, Node*> mp;
-     Node * head =NULL;
-     Node * last = NULL;
-    int m_size = 0;  
-    int size = 0;
+    int capacity;
+    Node* head;
+    Node* tail;
 
     LRUCache(int capacity) {
-        m_size = capacity;
-    } 
-    
-    void delAndMoveToLast(Node *tmp){
-        if(tmp->prev == NULL) 
-        {
-            head = tmp->next;
-            head->prev = NULL;
-        }else{
-            tmp->prev->next = tmp->next;
-            tmp->next->prev = tmp->prev;
-        }
-        last->next= tmp;
-        tmp->prev= last;
-        tmp->next= NULL;
-        last =tmp;
+        this->capacity = capacity;
+        head = nullptr;
+        tail = nullptr;
+    }
+
+    void moveToHead(Node* node) {
+        if (node == head) return;
+
+        // Remove node from its current position
+        if (node->prev) node->prev->next = node->next;
+        if (node->next) node->next->prev = node->prev;
+
+        // If the node is the tail, update the tail pointer
+        if (node == tail) tail = node->prev;
+
+        // Move node to the head
+        node->next = head;
+        node->prev = nullptr;
+        if (head) head->prev = node;
+        head = node;
+
+        // Update tail if the list was empty
+        if (!tail) tail = head;
+    }
+
+    void evict() {
+        if (!tail) return;
+
+        // Remove the tail node
+        mp.erase(tail->key);
+        Node* prevTail = tail;
+        tail = tail->prev;
+        if (tail) tail->next = nullptr;
+        else head = nullptr; // List is now empty
+
+        delete prevTail;
     }
 
     int get(int key) {
-         if(mp.find(key) == mp.end()) {
-            return -1;
-         }
-           Node * tmp = mp[key];
-            if(last!=tmp) {
-                delAndMoveToLast(tmp);
-            }
-          
-         return mp[key]->value;
+        if (mp.find(key) == mp.end()) return -1;
+
+        Node* node = mp[key];
+        moveToHead(node);
+        return node->val;
     }
 
     void put(int key, int value) {
-        if(mp.find(key) == mp.end()) {
-            Node * tmp = new Node(key, value);
-            size++;
-            mp[key]= tmp;
-            if(head  == NULL) {
-                 head = tmp;
-                 last = tmp;
-            }
-            else
-            {
-                 last->next=tmp;
-                 tmp->prev = last;
-                 last = tmp;
+        if (mp.find(key) != mp.end()) {
+            // Update the value of the existing node and move it to the head
+            Node* node = mp[key];
+            node->val = value;
+            moveToHead(node);
+        } else {
+            if (mp.size() >= capacity) {
+                // Evict the least recently used node
+                evict();
             }
 
-            if(size>m_size) {
-                   Node * tmp1 = head;
-                   mp.erase(head->key);
-                   head->next->prev =NULL;
-                   tmp1 = NULL;
-                   head = head->next; 
-               size--;
-            }
-        }else {
-            mp[key]->value = value;
-             Node * tmp = mp[key];
-            if(last!=tmp) {
-               delAndMoveToLast(tmp);
-            }
+            // Add the new node
+            Node* newNode = new Node(key, value);
+            newNode->next = head;
+            if (head) head->prev = newNode;
+            head = newNode;
+            if (!tail) tail = newNode;
+
+            mp[key] = newNode;
         }
     }
 };
-
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache* obj = new LRUCache(capacity);
- * int param_1 = obj->get(key);
- * obj->put(key,value);
- */
