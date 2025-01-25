@@ -12,7 +12,7 @@ public:
         {
             return INT_MAX;
         }
-        
+
         if(dp[currIndex][k] != -1)
         {
             return dp[currIndex][k];
@@ -25,6 +25,7 @@ public:
             {
                 sum = sum+ nums[i];
             }
+            dp[currIndex][k] =sum;
             return sum;
         }
 
