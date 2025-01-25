@@ -12,7 +12,6 @@ public:
         sort(start.begin(),start.end());
         sort(end.begin(), end.end());
         vector<int> ans;
-        cout<<start[0]<<endl;
         for(int i=0;i<people.size();i++)
         {
             int started = 0;
@@ -38,7 +37,6 @@ public:
                 int distance = std::distance(end.begin(), it1);
                 ended = distance ;
             }
-            cout<<started<<" "<<ended<<endl;
             ans.push_back(started-ended);
         }
         return ans;
