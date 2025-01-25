@@ -12,6 +12,11 @@ public:
         {
             return INT_MAX;
         }
+        
+        if(dp[currIndex][k] != -1)
+        {
+            return dp[currIndex][k];
+        }
 
         if(k == 1)
         {
@@ -21,11 +26,6 @@ public:
                 sum = sum+ nums[i];
             }
             return sum;
-        }
-
-        if(dp[currIndex][k] != -1)
-        {
-            return dp[currIndex][k];
         }
 
         int sum = 0;
