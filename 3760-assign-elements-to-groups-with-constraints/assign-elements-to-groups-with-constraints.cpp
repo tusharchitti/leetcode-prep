@@ -1,35 +1,30 @@
 class Solution {
-public:
-    vector<int> assignElements(vector<int>& g, vector<int>& e) {
-        int n = g.size() ;
-        int m = e.size() ;
-        map<int , int> map ;
-        for(int i = 0 ; i < m ; i++) {
-            if( map.find(e[i]) == map.end() )
-             map[e[i]] = i ;
-        }
-
-        vector<int> v ;
-
-        for(int i = 0 ; i < n ; i++) {
-            int ans = INT_MAX ;
-            for(int j = 1 ; j*j<=(g[i]) ;j++) {
-                if( g[i] % j == 0 && map.find(j) != map.end()) {
-                    ans = min(map[j] , ans) ;
-                } 
-
-                int div = g[i] / j ;
-                if( g[i] % div == 0 && map.find(div) != map.end()) {
-                    ans = min(map[div] , ans) ;
-                } 
+    public:
+        vector<int> assignElements(vector<int>& groups, vector<int>& elements) {
+            unordered_map<int, int> mpp;
+            for (int j = 0; j < elements.size();j++) {
+                if (mpp.find(elements[j]) ==mpp.end())
+                    mpp[elements[j]] = j;
+                else
+                    mpp[elements[j]] = min(mpp[elements[j]],j);
             }
-
-            if( ans == INT_MAX)  ans = -1 ;
-            v.push_back(ans) ;
+            
+            vector<int> res;
+            res.reserve(groups.size());
+            for (int k : groups) {
+                int mini = INT_MAX;
+                for (int i = 1; i*i <= k;i++) {
+                    if (k%i == 0) {
+                        if (mpp.find(i) != mpp.end())
+                            mini = min(mini,mpp[i]);
+                        int temp = k/i;
+                        if (temp != i && mpp.find(temp) !=mpp.end())
+                            mini = min(mini,mpp[temp]);
+                    }
+                }
+                res.push_back(mini == INT_MAX ?-1 : mini);
+            }
+            return res;
         }
-
-        return v ;
-
-    }
-        
-};
+    };
+    
