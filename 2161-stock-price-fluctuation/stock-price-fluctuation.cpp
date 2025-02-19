@@ -1,7 +1,7 @@
 class StockPrice {
 public:
-    multiset<int>stockPriceSet;
-    map<int,int> stockPriceMap;
+    multiset<int> stockPriceSet;
+    unordered_map<int,int> stockPriceMap;
     int maxTimestamp;
 
     StockPrice() {
