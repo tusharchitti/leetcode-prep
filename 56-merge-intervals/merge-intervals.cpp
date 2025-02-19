@@ -1,48 +1,35 @@
 class Solution {
 public:
+    vector<int> MergeOverlappingInterval(vector<int> first, vector<int> second)
+    {
+          // case 1 [2, 4] [5,6] => no change-done
+          // case 2  [2,4] [2 8] => merge them done
+          // case 3   [2,5] [3,5] =>  merge them
+          // case 4   [2,5] [3,4] => merge them
+          if(second[0] <= first[1])
+          {
+            return {first[0],max(first[1],second[1])};
+          }
+          return {};
+    }
 
-/**
-
-case1 : done
-[1,3]  [5,6] =. [1,3] [5,6]
-
-
-case2 :
-[1,6]  [2,3] => [1,6]
-
-case3 :
-[1 ,4/6] [4,8] =>  [1,8]
-
-for(;;){
-    []
-}
-
-**/
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-    std::sort(intervals.begin(), intervals.end(), [](const std::vector<int>& a, const std::vector<int>& b) {
-        if(a[0]==b[0])
-        return a[1] < b[1];
-        return a[0] < b[0]; // Compare the first element of each row
-    });
-     vector<vector<int>> ans;
-     int count  = 0;
-     int size = intervals.size();
-     for(int i=0;i<size;i++){
-        if(ans.size() == 0 ) {
-            ans.push_back({intervals[i][0],intervals[i][1]});
-            count++;
+        vector<vector<int>> mergedVector;
+        sort(intervals.begin(),intervals.end());
+        mergedVector.push_back(intervals[0]);
+        for(int i=1;i<intervals.size();i++)
+        {
+           vector<int> recentMergedVector = mergedVector.back();
+           if(MergeOverlappingInterval(recentMergedVector, intervals[i]).size() == 0)
+           {
+            mergedVector.push_back(intervals[i]);
+           }
+           else
+           {
+            mergedVector.pop_back();
+            mergedVector.push_back(MergeOverlappingInterval(recentMergedVector, intervals[i]));
+           }
         }
-        else {
-            vector<int> merged = ans[count-1];
-            if(intervals[i][0]>merged[1]){
-                ans.push_back({intervals[i][0],intervals[i][1]});
-                count++;
-            }
-            if(intervals[i][1] >= merged[1]) {
-                ans[count-1][1] = intervals[i][1] ;
-            }
-        }
-     }
-     return ans;
+        return mergedVector;
     }
 };
