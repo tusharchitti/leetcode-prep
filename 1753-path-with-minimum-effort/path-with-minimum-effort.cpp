@@ -1,45 +1,33 @@
 class Solution {
 public:
     int minimumEffortPath(vector<vector<int>>& heights) {
-        int rows = heights.size();
-        int cols = heights[0].size();
+        int rows = heights.size(), cols = heights[0].size();
+        vector<vector<int>> dist(rows, vector<int>(cols, INT_MAX));
+        priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, greater<>> minHeap;
+        minHeap.emplace(0, 0, 0);
+        dist[0][0] = 0;
         
-        vector<vector<int>> directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-
-        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
-
-        vector<vector<int>> effort(rows, vector<int>(cols, 1e9));
-        effort[0][0] = 0;
-
-        pq.push({0, 0, 0});
-
-        while (!pq.empty()) {
-            auto current = pq.top();
-            pq.pop();
+        int directions[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        
+        while (!minHeap.empty()) {
+            auto [effort, x, y] = minHeap.top();
+            minHeap.pop();
             
-            int currEffort = current[0];
-            int row = current[1];
-            int col = current[2];
-
-            if (row == rows - 1 && col == cols - 1) {
-                return currEffort;
-            }
-
-            for (auto dir : directions) {
-                int newRow = row + dir[0];
-                int newCol = col + dir[1];
-
-                if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
-                    int diff = abs(heights[row][col] - heights[newRow][newCol]);
-                    int maxEffort = max(currEffort, diff);
-
-                    if (maxEffort < effort[newRow][newCol]) {
-                        effort[newRow][newCol] = maxEffort;
-                        pq.push({maxEffort, newRow, newCol});
+            if (effort > dist[x][y]) continue;
+            
+            if (x == rows - 1 && y == cols - 1) return effort;
+            
+            for (auto& dir : directions) {
+                int nx = x + dir[0], ny = y + dir[1];
+                if (nx >= 0 && nx < rows && ny >= 0 && ny < cols) {
+                    int new_effort = max(effort, abs(heights[x][y] - heights[nx][ny]));
+                    if (new_effort < dist[nx][ny]) {
+                        dist[nx][ny] = new_effort;
+                        minHeap.emplace(new_effort, nx, ny);
                     }
                 }
             }
         }
-        return 0;
+        return -1;
     }
 };
