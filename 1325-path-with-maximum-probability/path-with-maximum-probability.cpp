@@ -40,8 +40,6 @@ public:
                if(used[edges[index].first] == 0)
                {
                  double newNumber = edges[index].second * top.second;
-                 cout<<edges[index].first<<endl;
-                 cout<<newNumber<<endl;
                  if(newNumber > maxProb[edges[index].first])
                  {
                    maxProb[edges[index].first] = newNumber;
@@ -51,11 +49,6 @@ public:
           }
 
         }
-        for(double prop : maxProb)
-        {
-            cout<<prop<<" ";
-        }
-        cout<<endl;
         return maxProb[end_node];
     }
 };
