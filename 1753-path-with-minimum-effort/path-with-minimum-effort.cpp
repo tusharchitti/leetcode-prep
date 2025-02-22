@@ -1,41 +1,45 @@
-#include <vector>
-#include <queue>
-#include <tuple>
-
-using namespace std;
-
 class Solution {
 public:
     int minimumEffortPath(vector<vector<int>>& heights) {
-        int n = heights.size(), m = heights[0].size();
+        int rows = heights.size();
+        int cols = heights[0].size();
         
-        // Min heap: {effort, row, col}
-        priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, greater<>> pq;
-        
-        vector<vector<int>> minEffort(n, vector<int>(m, INT_MAX));
-        vector<pair<int, int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-        
-        pq.emplace(0, 0, 0);
-        minEffort[0][0] = 0;
-        
+        vector<vector<int>> directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+
+        vector<vector<int>> effort(rows, vector<int>(cols, 1e9));
+        effort[0][0] = 0;
+
+        pq.push({0, 0, 0});
+
         while (!pq.empty()) {
-            auto [effort, x, y] = pq.top();
+            auto current = pq.top();
             pq.pop();
             
-            if (x == n - 1 && y == m - 1) return effort;  // Reached destination
-            
-            for (auto [dx, dy] : directions) {
-                int nx = x + dx, ny = y + dy;
-                if (nx >= 0 && ny >= 0 && nx < n && ny < m) {
-                    int newEffort = max(effort, abs(heights[x][y] - heights[nx][ny]));
-                    if (newEffort < minEffort[nx][ny]) {
-                        minEffort[nx][ny] = newEffort;
-                        pq.emplace(newEffort, nx, ny);
+            int currEffort = current[0];
+            int row = current[1];
+            int col = current[2];
+
+            if (row == rows - 1 && col == cols - 1) {
+                return currEffort;
+            }
+
+            for (auto dir : directions) {
+                int newRow = row + dir[0];
+                int newCol = col + dir[1];
+
+                if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
+                    int diff = abs(heights[row][col] - heights[newRow][newCol]);
+                    int maxEffort = max(currEffort, diff);
+
+                    if (maxEffort < effort[newRow][newCol]) {
+                        effort[newRow][newCol] = maxEffort;
+                        pq.push({maxEffort, newRow, newCol});
                     }
                 }
             }
         }
-        
-        return -1;  // Should never reach here
+        return 0;
     }
 };
