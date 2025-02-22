@@ -24,7 +24,7 @@ public:
         vector<vector<pair<int,double>>> adjmat = CreateAdjMat(n,edges,succProb);
         priority_queue<pair<int,double> , vector<pair<int,double>>, Comparator> pq;
         vector<double> maxProb(n,0);
-        pq.push(make_pair(start_node,1.0));
+        pq.emplace(start_node,1.0);
         maxProb[start_node] = 1;
         while(pq.size()!=0)
         {
@@ -39,7 +39,7 @@ public:
                  if(newNumber > maxProb[edges[index].first])
                  {
                    maxProb[edges[index].first] = newNumber;
-                   pq.push(make_pair(edges[index].first,newNumber));
+                   pq.emplace(edges[index].first,newNumber);
                  }
           }
 
