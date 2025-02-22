@@ -1,39 +1,41 @@
+#include <vector>
+#include <queue>
+#include <tuple>
+
+using namespace std;
+
 class Solution {
 public:
     int minimumEffortPath(vector<vector<int>>& heights) {
-        int n = heights.size();
-        int m = heights[0].size();
+        int n = heights.size(), m = heights[0].size();
         
-        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pqMinEffort;
-        vector<vector<int>> minValue(n, vector<int>(m, INT_MAX));
-        pqMinEffort.push({0, 0, 0});
+        // Min heap: {effort, row, col}
+        priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, greater<>> pq;
         
-        vector<int> directions = {0, 1, 0, -1, 0};
-
-        while (!pqMinEffort.empty()) {
-            vector<int> top = pqMinEffort.top();
-            pqMinEffort.pop();
-
-            if (top[0] == n-1 && top[1] == m-1) return top[2];  // ✅ Early exit
+        vector<vector<int>> minEffort(n, vector<int>(m, INT_MAX));
+        vector<pair<int, int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        
+        pq.emplace(0, 0, 0);
+        minEffort[0][0] = 0;
+        
+        while (!pq.empty()) {
+            auto [effort, x, y] = pq.top();
+            pq.pop();
             
-            if (top[2] > minValue[top[0]][top[1]]) continue;  // ✅ Skip worse paths
+            if (x == n - 1 && y == m - 1) return effort;  // Reached destination
             
-            for (int d = 0; d < 4; d++) {
-                int nx = top[0] + directions[d];
-                int ny = top[1] + directions[d + 1];
-
+            for (auto [dx, dy] : directions) {
+                int nx = x + dx, ny = y + dy;
                 if (nx >= 0 && ny >= 0 && nx < n && ny < m) {
-                    int diffFromTop = abs(heights[top[0]][top[1]] - heights[nx][ny]);
-                    int newEffort = max(top[2], diffFromTop);
-
-                    if (newEffort < minValue[nx][ny]) {
-                        minValue[nx][ny] = newEffort;
-                        pqMinEffort.push({nx, ny, newEffort});
+                    int newEffort = max(effort, abs(heights[x][y] - heights[nx][ny]));
+                    if (newEffort < minEffort[nx][ny]) {
+                        minEffort[nx][ny] = newEffort;
+                        pq.emplace(newEffort, nx, ny);
                     }
                 }
             }
         }
-
+        
         return -1;  // Should never reach here
     }
 };
