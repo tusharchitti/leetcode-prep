@@ -1,12 +1,6 @@
-#include <mutex>
-#include <condition_variable>
 class Foo {
 public:
-    
-    condition_variable isPrintedCV;
-    bool isFirstPrinted = false;
-    bool isSecondPrinted = false;
-    mutex mtx;
+binary_semaphore seconds{0} , thirds{0};
     Foo() {
         
     }
@@ -15,25 +9,20 @@ public:
         
         // printFirst() outputs "first". Do not change or remove this line.
         printFirst();
-        isFirstPrinted = true;
-        isPrintedCV.notify_all();
+        seconds.release();
     }
 
     void second(function<void()> printSecond) {
-        
+        seconds.acquire();
         // printSecond() outputs "second". Do not change or remove this line.
-        unique_lock<mutex> lock1(mtx);
-        isPrintedCV.wait(lock1,[&]{return isFirstPrinted;});
         printSecond();
-        isSecondPrinted = true;
-        isPrintedCV.notify_all();
+        thirds.release();
     }
 
     void third(function<void()> printThird) {
         
+        thirds.acquire();
         // printThird() outputs "third". Do not change or remove this line.
-        unique_lock<mutex> lock2(mtx);
-        isPrintedCV.wait(lock2,[&]{return isSecondPrinted;});
         printThird();
     }
 };
