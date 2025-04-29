@@ -51,7 +51,7 @@ public:
                 if (!visit[nx][ny]) {
                     // The time to reach this cell is max(current time, elevation at the neighbor)
                     pq.push({max(time, grid[nx][ny]), nx, ny});
-                    visit[nx][ny] = true; // Mark the cell as visited
+                    visit[nx][ny] = true; // Mark the cell as visited after adding to the queue
                 }
             }
         }
